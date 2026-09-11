@@ -1,227 +1,475 @@
 @import "tailwindcss";
-@import "@heroui/styles"; 
+@import "@heroui/styles";
 
-/* ============================================
-   TAILWIND 4 — CUSTOM THEME TOKENS
-   ============================================ */
+/* =========================================================
+   TAILWIND CSS v4 — CUSTOM THEME TOKENS
+   ========================================================= */
+
 @theme {
-  /* Brand colors */
-  --color-gold: #C8A24A;
-  --color-gold-soft: #E8D9A8;
-  --color-ivory: #FAF8F3;
-  --color-ink: #0F172A;
-  --color-muted: #64748B;
-  --color-line: #E5E1D8;
+  /* ---------- Brand Colors ---------- */
+  --color-gold: #c8a24a;
+  --color-gold-soft: #e8d9a8;
+  --color-gold-soft-fg: #6b4e12;
 
-  /* Custom radii */
+  --color-ivory: #faf8f3;
+  --color-ink: #0f172a;
+  --color-muted: #64748b;
+  --color-line: #e5e1d8;
+
+  /* ---------- Custom Radius ---------- */
   --radius-card: 12px;
   --radius-btn: 8px;
 
-  /* Fonts (loaded via next/font) */
+  /* ---------- Fonts ---------- */
   --font-display: var(--font-fraunces);
   --font-body: var(--font-inter);
   --font-mono: var(--font-jetbrains);
 }
 
-/* ============================================
-   LIGHT MODE — HEROUI CSS VARIABLES
-   (HSL format: H S% L%)
-   ============================================ */
+
+/* =========================================================
+   LIGHT THEME
+   HeroUI CSS Variables
+   Values use HSL format: H S% L%
+   ========================================================= */
+
 :root {
-  /* Primary — Deep Indigo */
-  --heroui-primary-50:  230 60% 96%;
+  /* -------------------------------------------------------
+     Primary — Deep Indigo
+     Base: #1E2A5A
+     ------------------------------------------------------- */
+
+  --heroui-primary-50: 230 60% 96%;
   --heroui-primary-100: 230 55% 90%;
   --heroui-primary-200: 230 50% 80%;
   --heroui-primary-300: 230 50% 65%;
   --heroui-primary-400: 230 55% 45%;
-  --heroui-primary-500: 230 65% 24%;   /* #1E2A5A */
+  --heroui-primary-500: 230 65% 24%;
   --heroui-primary-600: 230 65% 20%;
   --heroui-primary-700: 230 65% 16%;
   --heroui-primary-800: 230 65% 12%;
   --heroui-primary-900: 230 65% 8%;
+
   --heroui-primary: 230 65% 24%;
   --heroui-primary-foreground: 0 0% 100%;
 
-  /* Secondary — Teal (CTA / Hire / Pay) */
-  --heroui-secondary-50:  180 70% 95%;
+
+  /* -------------------------------------------------------
+     Secondary — Teal
+     Used for CTA / Hire / Pay
+     Base: #0E8F8F
+     ------------------------------------------------------- */
+
+  --heroui-secondary-50: 180 70% 95%;
   --heroui-secondary-100: 180 70% 85%;
   --heroui-secondary-200: 180 75% 70%;
   --heroui-secondary-300: 180 80% 55%;
   --heroui-secondary-400: 180 85% 42%;
-  --heroui-secondary-500: 180 85% 31%;   /* #0E8F8F */
+  --heroui-secondary-500: 180 85% 31%;
   --heroui-secondary-600: 180 85% 25%;
   --heroui-secondary-700: 180 85% 20%;
   --heroui-secondary-800: 180 85% 15%;
   --heroui-secondary-900: 180 85% 10%;
+
   --heroui-secondary: 180 85% 31%;
   --heroui-secondary-foreground: 0 0% 100%;
 
-  /* Success */
+
+  /* -------------------------------------------------------
+     Semantic Colors
+     ------------------------------------------------------- */
+
   --heroui-success: 150 45% 33%;
   --heroui-success-foreground: 0 0% 100%;
 
-  /* Warning */
   --heroui-warning: 32 95% 44%;
   --heroui-warning-foreground: 0 0% 100%;
 
-  /* Danger */
   --heroui-danger: 0 74% 42%;
   --heroui-danger-foreground: 0 0% 100%;
 
-  /* Info */
   --heroui-info: 220 90% 56%;
   --heroui-info-foreground: 0 0% 100%;
 
-  /* Background & Surface */
-  --heroui-background: 43 33% 96%;        /* ivory */
-  --heroui-foreground: 222 47% 11%;       /* ink */
 
-  /* Content (text) */
-  --heroui-content1: 0 0% 100%;           /* card surface */
+  /* -------------------------------------------------------
+     Background & Main Text
+     ------------------------------------------------------- */
+
+  --heroui-background: 43 33% 96%;
+  --heroui-foreground: 222 47% 11%;
+
+
+  /* -------------------------------------------------------
+     Content / Surface Colors
+     ------------------------------------------------------- */
+
+  --heroui-content1: 0 0% 100%;
   --heroui-content1-foreground: 222 47% 11%;
+
   --heroui-content2: 43 30% 94%;
   --heroui-content2-foreground: 222 30% 25%;
+
   --heroui-content3: 43 20% 90%;
   --heroui-content3-foreground: 222 20% 35%;
+
   --heroui-content4: 43 15% 85%;
   --heroui-content4-foreground: 222 15% 45%;
 
-  /* Divider / Border */
-  --heroui-divider: 43 15% 87%;
-  --heroui-border: 43 15% 87%;
 
-  /* Radius */
+  /* -------------------------------------------------------
+     Default / Skeleton Colors
+     ------------------------------------------------------- */
+
+  --heroui-default-50: 43 30% 97%;
+  --heroui-default-100: 43 20% 92%;
+  --heroui-default-200: 43 15% 87%;
+  --heroui-default-300: 43 12% 78%;
+  --heroui-default-400: 43 10% 62%;
+  --heroui-default-500: 43 8% 48%;
+  --heroui-default-600: 43 8% 38%;
+  --heroui-default-700: 43 8% 28%;
+  --heroui-default-800: 43 8% 20%;
+  --heroui-default-900: 43 8% 12%;
+
+
+  /* -------------------------------------------------------
+     Border / Divider
+     ------------------------------------------------------- */
+
+  --heroui-divider: 43 15% 87%;
+  --heroui-border: var(--heroui-divider);
+
+
+  /* -------------------------------------------------------
+     Radius
+     ------------------------------------------------------- */
+
   --heroui-radius-small: 6px;
   --heroui-radius-medium: 8px;
   --heroui-radius-large: 12px;
 }
 
-/* ============================================
-   DARK MODE — HEROUI CSS VARIABLES
-   ============================================ */
+
+/* =========================================================
+   DARK THEME
+   ========================================================= */
+
 .dark,
 [data-theme="dark"] {
-  --heroui-background: 222 47% 7%;        /* #0B1020 */
-  --heroui-foreground: 30 10% 92%;        /* #E7E5E4 */
 
-  --heroui-primary-500: 230 55% 67%;      /* lighter indigo */
+  /* -------------------------------------------------------
+     Primary — Lighter Indigo for Dark Background
+     ------------------------------------------------------- */
+
+  --heroui-primary-50: 230 55% 96%;
+  --heroui-primary-100: 230 55% 90%;
+  --heroui-primary-200: 230 55% 82%;
+  --heroui-primary-300: 230 55% 75%;
+  --heroui-primary-400: 230 55% 70%;
+  --heroui-primary-500: 230 55% 67%;
+  --heroui-primary-600: 230 55% 60%;
+  --heroui-primary-700: 230 55% 52%;
+  --heroui-primary-800: 230 55% 45%;
+  --heroui-primary-900: 230 55% 38%;
+
   --heroui-primary: 230 55% 67%;
   --heroui-primary-foreground: 230 65% 12%;
 
+
+  /* -------------------------------------------------------
+     Secondary — Teal for Dark Background
+     ------------------------------------------------------- */
+
+  --heroui-secondary-50: 180 70% 92%;
+  --heroui-secondary-100: 180 70% 82%;
+  --heroui-secondary-200: 180 70% 70%;
+  --heroui-secondary-300: 180 70% 58%;
+  --heroui-secondary-400: 180 70% 50%;
   --heroui-secondary-500: 180 70% 45%;
+  --heroui-secondary-600: 180 70% 38%;
+  --heroui-secondary-700: 180 70% 32%;
+  --heroui-secondary-800: 180 70% 25%;
+  --heroui-secondary-900: 180 70% 18%;
+
   --heroui-secondary: 180 70% 45%;
   --heroui-secondary-foreground: 180 85% 8%;
 
-  --heroui-content1: 222 40% 12%;         /* surface-dark */
+
+  /* -------------------------------------------------------
+     Semantic Colors
+     ------------------------------------------------------- */
+
+  --heroui-success: 150 45% 42%;
+  --heroui-success-foreground: 0 0% 100%;
+
+  --heroui-warning: 32 95% 52%;
+  --heroui-warning-foreground: 222 47% 7%;
+
+  --heroui-danger: 0 74% 52%;
+  --heroui-danger-foreground: 0 0% 100%;
+
+  --heroui-info: 220 90% 64%;
+  --heroui-info-foreground: 0 0% 100%;
+
+
+  /* -------------------------------------------------------
+     Background & Main Text
+     ------------------------------------------------------- */
+
+  --heroui-background: 222 47% 7%;
+  --heroui-foreground: 30 10% 92%;
+
+
+  /* -------------------------------------------------------
+     Content / Surface Colors
+     ------------------------------------------------------- */
+
+  --heroui-content1: 222 40% 12%;
   --heroui-content1-foreground: 30 10% 92%;
+
   --heroui-content2: 222 35% 16%;
   --heroui-content2-foreground: 30 10% 85%;
+
   --heroui-content3: 222 30% 20%;
   --heroui-content3-foreground: 30 10% 80%;
+
   --heroui-content4: 222 25% 25%;
   --heroui-content4-foreground: 30 10% 75%;
 
+
+  /* -------------------------------------------------------
+     Default / Skeleton Colors
+     ------------------------------------------------------- */
+
+  --heroui-default-50: 222 30% 10%;
+  --heroui-default-100: 222 25% 18%;
+  --heroui-default-200: 222 25% 22%;
+  --heroui-default-300: 222 20% 28%;
+  --heroui-default-400: 222 15% 40%;
+  --heroui-default-500: 222 12% 55%;
+  --heroui-default-600: 222 10% 68%;
+  --heroui-default-700: 222 8% 78%;
+  --heroui-default-800: 222 8% 85%;
+  --heroui-default-900: 222 8% 92%;
+
+
+  /* -------------------------------------------------------
+     Border / Divider
+     ------------------------------------------------------- */
+
   --heroui-divider: 222 25% 20%;
-  --heroui-border: 222 25% 20%;
+  --heroui-border: var(--heroui-divider);
 
-  --color-gold: #D9B85E;
-  --color-ivory: #0B1020;
-  --color-ink: #E7E5E4;
-  --color-line: #1E2638;
+
+  /* -------------------------------------------------------
+     Dark Mode Brand Tokens
+     ------------------------------------------------------- */
+
+  --color-gold: #d9b85e;
+  --color-gold-soft: #5f4e22;
+  --color-gold-soft-fg: #f0e4b8;
+
+  --color-ivory: #0b1020;
+  --color-ink: #e7e5e4;
+  --color-muted: #94a3b8;
+  --color-line: #1e2638;
+
+
+  /* -------------------------------------------------------
+     Radius
+     ------------------------------------------------------- */
+
+  --heroui-radius-small: 6px;
+  --heroui-radius-medium: 8px;
+  --heroui-radius-large: 12px;
 }
 
-/* ============================================
+
+/* =========================================================
    BASE STYLES
-   ============================================ */
-* {
-  border-color: hsl(var(--heroui-border));
-}
+   ========================================================= */
 
 html {
   scroll-behavior: smooth;
 }
 
+
 body {
   background: hsl(var(--heroui-background));
   color: hsl(var(--heroui-foreground));
+
   font-family: var(--font-body), system-ui, sans-serif;
-  font-feature-settings: "cv02", "cv03", "cv04", "cv11";
+
+  font-feature-settings:
+    "cv02",
+    "cv03",
+    "cv04",
+    "cv11";
+
   -webkit-font-smoothing: antialiased;
 }
 
-h1, h2, h3, h4 {
+
+/* =========================================================
+   HEADINGS
+   ========================================================= */
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
   font-family: var(--font-display), Georgia, serif;
   letter-spacing: -0.02em;
 }
 
-/* Numbers / fees / rates */
+
+/* =========================================================
+   TABULAR NUMBERS
+   Useful for:
+   prices, fees, rates, statistics
+   ========================================================= */
+
 .font-tabular {
   font-family: var(--font-mono), ui-monospace, monospace;
   font-variant-numeric: tabular-nums;
 }
 
-/* Selection */
+
+/* =========================================================
+   TEXT SELECTION
+   ========================================================= */
+
 ::selection {
   background: hsl(var(--heroui-primary) / 0.2);
   color: hsl(var(--heroui-foreground));
 }
 
-/* Scrollbar (subtle) */
-::-webkit-scrollbar { width: 10px; height: 10px; }
-::-webkit-scrollbar-track { background: transparent; }
+
+/* =========================================================
+   SCROLLBAR
+   ========================================================= */
+
+::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
 ::-webkit-scrollbar-thumb {
   background: hsl(var(--heroui-divider));
   border-radius: 8px;
 }
+
 ::-webkit-scrollbar-thumb:hover {
   background: hsl(var(--heroui-primary) / 0.4);
 }
 
-/* Focus ring — accessible */
+
+/* =========================================================
+   ACCESSIBLE FOCUS RING
+   ========================================================= */
+
 :focus-visible {
   outline: 2px solid hsl(var(--heroui-primary));
   outline-offset: 2px;
 }
 
-/* ============================================
-   REUSABLE UTILITY CLASSES
-   ============================================ */
+
+/* =========================================================
+   REUSABLE UTILITIES
+   ========================================================= */
+
 @layer utilities {
+
+  /* -------------------------------------------------------
+     Page Container
+     Equivalent to roughly: max-w-7xl mx-auto px-4
+     ------------------------------------------------------- */
+
   .container-page {
-    max-width: 80rem; /* max-w-7xl */
+    width: 100%;
+    max-width: 80rem;
     margin-inline: auto;
     padding-inline: 1rem;
   }
+
   @media (min-width: 768px) {
-    .container-page { padding-inline: 2rem; }
+    .container-page {
+      padding-inline: 2rem;
+    }
   }
+
+
+  /* -------------------------------------------------------
+     Card
+     ------------------------------------------------------- */
 
   .card-legal {
     background: hsl(var(--heroui-content1));
     border: 1px solid hsl(var(--heroui-border));
     border-radius: var(--radius-card);
-    box-shadow: 0 1px 2px 0 rgb(0 0 0 / 0.04);
-    transition: transform 200ms ease, box-shadow 200ms ease;
+
+    box-shadow:
+      0 1px 2px 0 rgb(0 0 0 / 0.04);
+
+    transition:
+      transform 200ms ease,
+      box-shadow 200ms ease;
   }
+
   .card-legal:hover {
     transform: translateY(-4px);
-    box-shadow: 0 8px 24px -8px rgb(30 42 90 / 0.15);
+
+    box-shadow:
+      0 8px 24px -8px rgb(30 42 90 / 0.15);
   }
+
+  .dark .card-legal:hover {
+    box-shadow:
+      0 8px 24px -8px rgb(0 0 0 / 0.5);
+  }
+
+
+  /* -------------------------------------------------------
+     CTA Button
+     ------------------------------------------------------- */
 
   .btn-cta {
     background: hsl(var(--heroui-secondary));
     color: hsl(var(--heroui-secondary-foreground));
+
     border-radius: var(--radius-btn);
+
     font-weight: 500;
-    transition: background 150ms ease;
+
+    transition:
+      background-color 150ms ease,
+      transform 150ms ease;
   }
+
   .btn-cta:hover {
-    background: hsl(var(--heroui-secondary-600));
+    background: hsl(var(--heroui-secondary-400));
   }
+
+  .btn-cta:active {
+    transform: translateY(1px);
+  }
+
+
+  /* -------------------------------------------------------
+     Verified Badge
+     ------------------------------------------------------- */
 
   .badge-verified {
     background: var(--color-gold-soft);
-    color: #6B4E12;
+    color: var(--color-gold-soft-fg);
+
     font-weight: 500;
   }
 }
