@@ -1,8 +1,11 @@
+import Hero from "@/components/sections/Hero";
 import Image from "next/image";
 
 export default function Home() {
   return (
-    <div className="flex flex-col flex-1 items-center justify-center">
+    <div className="flex flex-col flex-1 items-center justify-center my-10 md:my-17">
+   
+        <Hero/>
       
     </div>
   );
