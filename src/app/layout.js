@@ -1,6 +1,16 @@
+import { Inter, Merriweather } from "next/font/google";
 import "./globals.css";
 import { Providers } from "./providers";
-import { fraunces, inter, jetbrains } from "@/lib/fonts";
+
+const inter = Inter({
+  variable: "--font-inter",
+  subsets: ["latin"],
+});
+
+const merriweather = Merriweather({
+  variable: "--font-merriweather",
+  subsets: ["latin"],
+});
 
 export const metadata = {
   title: "LegalEase — Find & Hire Expert Legal Counsel",
@@ -12,7 +22,7 @@ export default function RootLayout({ children }) {
   return (
     <html
       lang="en"
-      className={`${fraunces.variable} ${inter.variable} ${jetbrains.variable} h-full antialiased`}
+      className={`${inter.variable} ${merriweather.variable} h-full antialiased`}
     >
       <body className="min-h-full flex flex-col">
         <Providers>
