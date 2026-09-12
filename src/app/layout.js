@@ -1,6 +1,7 @@
 import { Inter, Merriweather } from "next/font/google";
 import "./globals.css";
-import { Providers } from "./providers";
+import NavBar from "@/components/shared/NavBar";
+
 
 const inter = Inter({
   variable: "--font-inter",
@@ -25,15 +26,15 @@ export default function RootLayout({ children }) {
       className={`${inter.variable} ${merriweather.variable} h-full antialiased`}
     >
       <body className="min-h-full flex flex-col">
-        <Providers>
-          {/* <Navbar /> ← পরে যোগ করবা */}
+      
+          <NavBar /> 
 
           <main className="flex-1">
             {children}
           </main>
 
           {/* <Footer /> ← পরে যোগ করবা */}
-        </Providers>
+       
       </body>
     </html>
   );
