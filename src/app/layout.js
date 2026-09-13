@@ -1,6 +1,7 @@
 import { Inter, Merriweather } from "next/font/google";
 import "./globals.css";
 import NavBar from "@/components/shared/NavBar";
+import Footer from "@/components/shared/Footer";
 
 
 const inter = Inter({
@@ -33,7 +34,7 @@ export default function RootLayout({ children }) {
             {children}
           </main>
 
-          {/* <Footer /> ← পরে যোগ করবা */}
+          <Footer/>
        
       </body>
     </html>
