@@ -48,34 +48,41 @@ export default function RoleSelector() {
   }, [session, isPending, router]);
 
   const handleConfirm = async () => {
-    if (!selected) {
-      toast.error("Please select a role to continue");
+  if (!selected) {
+    toast.error("Please select a role to continue");
+    return;
+  }
+
+  setLoading(true);
+  try {
+    // ✅ authClient.updateUser বাদ, fetch ইউজ করো
+    const res = await fetch("/api/user/set-role", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ role: selected }),
+    });
+
+    const data = await res.json();
+
+    if (!res.ok) {
+      toast.error(data.error || "Failed to set role");
       return;
     }
 
-    setLoading(true);
-    try {
-      const { error } = await authClient.updateUser({ role: selected });
+    toast.success(
+      selected === "lawyer"
+        ? "Welcome, Lawyer! Complete your profile to start."
+        : "Welcome to LegalEase!"
+    );
 
-      if (error) {
-        toast.error(error.message || "Failed to set role");
-        return;
-      }
-
-      toast.success(
-        selected === "lawyer"
-          ? "Welcome, Lawyer! Complete your profile to start."
-          : "Welcome to LegalEase!"
-      );
-
-      const target = ROLES.find((r) => r.id === selected);
-      router.push(target?.redirect || "/");
-    } catch (err) {
-      toast.error(err.message || "Something went wrong");
-    } finally {
-      setLoading(false);
-    }
-  };
+    const target = ROLES.find((r) => r.id === selected);
+    router.push(target?.redirect || "/");
+  } catch (err) {
+    toast.error(err.message || "Something went wrong");
+  } finally {
+    setLoading(false);
+  }
+};
 
   return (
     <div className="relative min-h-[calc(100vh-80px)] flex items-center justify-center px-5 py-12 overflow-hidden bg-background">

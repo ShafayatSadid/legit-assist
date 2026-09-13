@@ -63,7 +63,7 @@ export default function LoginForm() {
     try {
       await authClient.signIn.social({
         provider: "google",
-        callbackURL: "/auth/redirect",
+        callbackURL: "/redirect",
       });
     } catch (err) {
       toast.error(err.message || "Google sign-in failed");

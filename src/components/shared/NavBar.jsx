@@ -263,7 +263,7 @@ const NavBar = () => {
                 >
                   <div className="flex items-center gap-3">
                     <FiUser className="size-4 text-secondary-text" />
-                    <Label className="text-foreground">My Profile</Label>
+                    <Label className="text-secondary-text">My Profile</Label>
                   </div>
                 </Dropdown.Item>
 
@@ -274,7 +274,7 @@ const NavBar = () => {
                 >
                   <div className="flex items-center gap-3">
                     <FiLayout className="size-4 text-secondary-text" />
-                    <Label className="text-foreground">Dashboard</Label>
+                    <Label className="text-secondary-text">Dashboard</Label>
                   </div>
                 </Dropdown.Item>
 
