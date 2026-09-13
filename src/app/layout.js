@@ -2,6 +2,7 @@ import { Inter, Merriweather } from "next/font/google";
 import "./globals.css";
 import NavBar from "@/components/shared/NavBar";
 import Footer from "@/components/shared/Footer";
+import { Toaster } from "react-hot-toast";
 
 
 const inter = Inter({
@@ -27,15 +28,15 @@ export default function RootLayout({ children }) {
       className={`${inter.variable} ${merriweather.variable} h-full antialiased`}
     >
       <body className="min-h-full flex flex-col">
-      
-          <NavBar /> 
+        <Toaster />
+        <NavBar />
 
-          <main className="flex-1">
-            {children}
-          </main>
+        <main className="flex-1 my-10 md:my-17">
+          {children}
+        </main>
 
-          <Footer/>
-       
+        <Footer />
+
       </body>
     </html>
   );
