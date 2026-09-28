@@ -1,12 +1,15 @@
 // lib/api.js
 import { authClient } from "@/lib/auth-client";
 
-const API_BASE = process.env.NEXT_PUBLIC_API_URL;
+const API_BASE = process.env.NEXT_PUBLIC_API_URL || "http://localhost:5000";
 
 async function getToken() {
-    const { data, error } = await authClient.token();
-    if (error) throw new Error("Failed to get token");
-    return data?.token;
+    try {
+        const { data } = await authClient.token();
+        return data?.token || null;
+    } catch {
+        return null;
+    }
 }
 
 export async function apiFetch(path, options = {}) {
