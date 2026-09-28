@@ -24,12 +24,12 @@ const NAV_LINKS = [
 const NavBar = () => {
   const sideMenuRef = useRef(null);
   const [burger, setBurger] = useState(true);
+  const [searchValue, setSearchValue] = useState("");
   const router = useRouter();
   const pathname = usePathname();
 
   const { data: session } = authClient.useSession();
   const user = session?.user;
-console.log('user:', user);
 
   const openMenu = () => {
     if (sideMenuRef.current) {
@@ -48,6 +48,15 @@ console.log('user:', user);
   const handleSignOut = async () => {
     await authClient.signOut();
     router.push("/");
+  };
+
+  const handleSearch = (e) => {
+    e.preventDefault();
+    const q = searchValue.trim();
+    if (!q) return;
+    router.push(`/lawyers?search=${encodeURIComponent(q)}`);
+    setSearchValue("");
+    closeMenu();
   };
 
   const isActive = (path) => pathname === path;
@@ -79,15 +88,20 @@ console.log('user:', user);
           <IoClose className="w-6 h-6 cursor-pointer hover:text-primary transition" />
         </button>
 
-        {/* Mobile Search — native input */}
-        <div className="mt-2 flex items-center h-10 bg-background border border-border rounded-lg px-3 focus-within:border-primary transition">
+        {/* Mobile Search */}
+        <form
+          onSubmit={handleSearch}
+          className="mt-2 flex items-center h-10 bg-background border border-border rounded-lg px-3 focus-within:border-primary transition"
+        >
           <FiSearch className="text-secondary-text shrink-0" size={14} />
           <input
             type="text"
             placeholder="Search lawyers..."
+            value={searchValue}
+            onChange={(e) => setSearchValue(e.target.value)}
             className="flex-1 bg-transparent border-none outline-none text-sm ml-2 min-w-0 placeholder:text-secondary-text font-sans text-foreground"
           />
-        </div>
+        </form>
 
         {/* Mobile Links */}
         {NAV_LINKS.map((link) => (
@@ -196,15 +210,20 @@ console.log('user:', user);
       {/* ─────────── Right Side ─────────── */}
       <div className="flex items-center gap-3 lg:gap-4">
 
-        {/* Desktop Search — native input */}
-        <div className="hidden lg:flex items-center w-64 h-10 bg-card border border-border hover:border-primary focus-within:border-primary rounded-lg px-3 transition">
+        {/* Desktop Search */}
+        <form
+          onSubmit={handleSearch}
+          className="hidden lg:flex items-center w-64 h-10 bg-card border border-border hover:border-primary focus-within:border-primary rounded-lg px-3 transition"
+        >
           <FiSearch className="text-secondary-text shrink-0" size={14} />
           <input
             type="text"
             placeholder="Search lawyers..."
+            value={searchValue}
+            onChange={(e) => setSearchValue(e.target.value)}
             className="flex-1 bg-transparent border-none outline-none text-sm ml-2 min-w-0 placeholder:text-secondary-text font-sans text-foreground"
           />
-        </div>
+        </form>
 
         {/* Login CTA (no user) */}
         {!user && (
