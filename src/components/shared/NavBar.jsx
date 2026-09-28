@@ -11,7 +11,7 @@ import {
   FiLayout,
   FiUser,
 } from "react-icons/fi";
-import { Avatar, Button, Dropdown, Input, Label } from "@heroui/react";
+import { Avatar, Button, Dropdown, Label } from "@heroui/react";
 import { usePathname, useRouter } from "next/navigation";
 
 import { authClient } from "@/lib/auth-client";
@@ -29,6 +29,7 @@ const NavBar = () => {
 
   const { data: session } = authClient.useSession();
   const user = session?.user;
+console.log('user:', user);
 
   const openMenu = () => {
     if (sideMenuRef.current) {
@@ -78,16 +79,13 @@ const NavBar = () => {
           <IoClose className="w-6 h-6 cursor-pointer hover:text-primary transition" />
         </button>
 
-        {/* Mobile Search */}
-        <div className="mt-2">
-          <Input
+        {/* Mobile Search — native input */}
+        <div className="mt-2 flex items-center h-10 bg-background border border-border rounded-lg px-3 focus-within:border-primary transition">
+          <FiSearch className="text-secondary-text shrink-0" size={14} />
+          <input
+            type="text"
             placeholder="Search lawyers..."
-            startContent={<FiSearch className="text-secondary-text" />}
-            classNames={{
-              inputWrapper:
-                "bg-background border border-border rounded-lg h-10",
-              input: "text-sm",
-            }}
+            className="flex-1 bg-transparent border-none outline-none text-sm ml-2 min-w-0 placeholder:text-secondary-text font-sans text-foreground"
           />
         </div>
 
@@ -198,16 +196,13 @@ const NavBar = () => {
       {/* ─────────── Right Side ─────────── */}
       <div className="flex items-center gap-3 lg:gap-4">
 
-        {/* Desktop Search */}
-        <div className="hidden lg:block w-64">
-          <Input
+        {/* Desktop Search — native input */}
+        <div className="hidden lg:flex items-center w-64 h-10 bg-card border border-border hover:border-primary focus-within:border-primary rounded-lg px-3 transition">
+          <FiSearch className="text-secondary-text shrink-0" size={14} />
+          <input
+            type="text"
             placeholder="Search lawyers..."
-            startContent={<FiSearch className="text-secondary-text" />}
-            classNames={{
-              inputWrapper:
-                "bg-card border border-border hover:border-primary focus-within:border-primary rounded-lg h-10 transition",
-              input: "text-sm",
-            }}
+            className="flex-1 bg-transparent border-none outline-none text-sm ml-2 min-w-0 placeholder:text-secondary-text font-sans text-foreground"
           />
         </div>
 
@@ -235,7 +230,6 @@ const NavBar = () => {
             </Dropdown.Trigger>
 
             <Dropdown.Popover className="bg-card border border-border shadow-2xl rounded-2xl p-0 min-w-[240px]">
-              {/* User Info Header */}
               <div className="px-4 pt-4 pb-3 border-b border-border">
                 <div className="flex items-center gap-3">
                   <Avatar size="sm">

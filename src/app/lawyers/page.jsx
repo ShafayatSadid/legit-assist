@@ -54,7 +54,7 @@ function BrowseContent() {
     };
 
     return (
-        <section className="container-page py-10">
+        <section className="container-page py-10 max-w-7xl mx-auto px-2 sm:px-5">
             {/* ── Header ── */}
             <div className="text-center mb-10">
                 <h1 className="font-heading text-3xl md:text-4xl font-bold text-foreground">

@@ -1,9 +1,9 @@
+// app/layout.js
 import { Inter, Merriweather } from "next/font/google";
 import "./globals.css";
 import NavBar from "@/components/shared/NavBar";
 import Footer from "@/components/shared/Footer";
 import { Toaster } from "react-hot-toast";
-
 
 const inter = Inter({
   variable: "--font-inter",
@@ -26,8 +26,12 @@ export default function RootLayout({ children }) {
     <html
       lang="en"
       className={`${inter.variable} ${merriweather.variable} h-full antialiased`}
+      suppressHydrationWarning
     >
-      <body className="min-h-full flex flex-col">
+      <body
+        className="min-h-full flex flex-col"
+        suppressHydrationWarning
+      >
         <Toaster />
         <NavBar />
 
@@ -36,7 +40,6 @@ export default function RootLayout({ children }) {
         </main>
 
         <Footer />
-
       </body>
     </html>
   );

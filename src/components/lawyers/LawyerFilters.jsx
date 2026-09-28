@@ -3,7 +3,7 @@
 
 import { useEffect, useState } from "react";
 import { useRouter, useSearchParams, usePathname } from "next/navigation";
-import { Input, Select, ListBox, Button } from "@heroui/react";
+import { Select, ListBox, Button } from "@heroui/react";
 import { FiSearch, FiX } from "react-icons/fi";
 
 const SPECIALIZATIONS = [
@@ -46,7 +46,6 @@ export default function LawyerFilters() {
         searchParams.get("maxFee") || ""
     );
 
-    // ── URL param setter ──
     const setParam = (key, value) => {
         const params = new URLSearchParams(searchParams.toString());
         if (value && value !== "all" && value !== "All" && value !== "") {
@@ -54,11 +53,10 @@ export default function LawyerFilters() {
         } else {
             params.delete(key);
         }
-        params.delete("page"); // filter change → page reset
+        params.delete("page");
         router.replace(`${pathname}?${params.toString()}`);
     };
 
-    // ── Debounced search ──
     useEffect(() => {
         const id = setTimeout(() => {
             const current = searchParams.get("search") || "";
@@ -68,7 +66,6 @@ export default function LawyerFilters() {
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [searchInput]);
 
-    // ── Debounced fee ──
     useEffect(() => {
         const id = setTimeout(() => {
             const currMin = searchParams.get("minFee") || "";
@@ -89,39 +86,54 @@ export default function LawyerFilters() {
 
     const hasFilters = searchParams.toString().length > 0;
 
+    const fieldWrap = "flex flex-col min-w-0";
+    const labelCls =
+        "text-xs font-medium text-secondary-text font-sans mb-1.5 whitespace-nowrap";
+    const inputBaseCls =
+        "w-full h-10 px-3 rounded-lg border border-border bg-background text-sm text-foreground placeholder:text-secondary-text outline-none focus:border-primary transition font-sans";
+    const selectTriggerCls =
+        "h-10 rounded-lg border border-border bg-background px-3 text-sm w-full flex items-center justify-between";
+
     return (
         <div className="rounded-2xl border border-border bg-card p-4 md:p-5">
-            <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-3">
+            <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-12 gap-3 items-start">
                 {/* Search */}
-                <div className="col-span-2 lg:col-span-2">
-                    <label className="text-xs font-medium text-secondary-text font-sans block mb-1.5">
+                <div className={`${fieldWrap} col-span-2 md:col-span-3 lg:col-span-4`}>
+                    <label className={labelCls} htmlFor="filter-search">
                         Search
                     </label>
-                    <Input
-                        placeholder="Name or specialization..."
-                        value={searchInput}
-                        onValueChange={setSearchInput}
-                        startContent={<FiSearch className="text-secondary-text" />}
-                        classNames={{
-                            inputWrapper:
-                                "bg-background border border-border rounded-lg h-10",
-                            input: "text-sm",
-                        }}
-                    />
+                    <div className="relative">
+                        <FiSearch
+                            className="absolute left-3 top-1/2 -translate-y-1/2 text-secondary-text pointer-events-none"
+                            size={14}
+                        />
+                        <input
+                            id="filter-search"
+                            type="text"
+                            placeholder="Name or specialization..."
+                            value={searchInput}
+                            onChange={(e) => setSearchInput(e.target.value)}
+                            className={`${inputBaseCls} pl-9`}
+                        />
+                    </div>
                 </div>
 
                 {/* Specialization */}
-                <div className="col-span-1">
-                    <label className="text-xs font-medium text-secondary-text font-sans block mb-1.5">
+                <div className={`${fieldWrap} col-span-1 lg:col-span-2`}>
+                    <label className={labelCls} htmlFor="filter-specialization">
                         Specialization
                     </label>
                     <Select
+                        aria-label="Filter by specialization"
                         placeholder="All"
                         value={searchParams.get("specialization") || "All"}
                         onChange={(key) => setParam("specialization", key)}
                         className="w-full"
                     >
-                        <Select.Trigger className="h-10 rounded-lg border border-border bg-background px-3 text-sm w-full flex items-center justify-between">
+                        <Select.Trigger
+                            id="filter-specialization"
+                            className={selectTriggerCls}
+                        >
                             <Select.Value />
                             <Select.Indicator />
                         </Select.Trigger>
@@ -138,24 +150,32 @@ export default function LawyerFilters() {
                 </div>
 
                 {/* Sort */}
-                <div className="col-span-1">
-                    <label className="text-xs font-medium text-secondary-text font-sans block mb-1.5">
+                <div className={`${fieldWrap} col-span-1 lg:col-span-2`}>
+                    <label className={labelCls} htmlFor="filter-sort">
                         Sort by
                     </label>
                     <Select
+                        aria-label="Sort lawyers"
                         placeholder="Latest"
                         value={searchParams.get("sort") || "latest"}
                         onChange={(key) => setParam("sort", key)}
                         className="w-full"
                     >
-                        <Select.Trigger className="h-10 rounded-lg border border-border bg-background px-3 text-sm w-full flex items-center justify-between">
+                        <Select.Trigger
+                            id="filter-sort"
+                            className={selectTriggerCls}
+                        >
                             <Select.Value />
                             <Select.Indicator />
                         </Select.Trigger>
                         <Select.Popover>
                             <ListBox>
                                 {SORTS.map((s) => (
-                                    <ListBox.Item key={s.id} id={s.id} textValue={s.label}>
+                                    <ListBox.Item
+                                        key={s.id}
+                                        id={s.id}
+                                        textValue={s.label}
+                                    >
                                         {s.label}
                                     </ListBox.Item>
                                 ))}
@@ -165,24 +185,32 @@ export default function LawyerFilters() {
                 </div>
 
                 {/* Availability */}
-                <div className="col-span-1">
-                    <label className="text-xs font-medium text-secondary-text font-sans block mb-1.5">
+                <div className={`${fieldWrap} col-span-1 lg:col-span-2`}>
+                    <label className={labelCls} htmlFor="filter-availability">
                         Availability
                     </label>
                     <Select
+                        aria-label="Filter by availability"
                         placeholder="All"
                         value={searchParams.get("availability") || "all"}
                         onChange={(key) => setParam("availability", key)}
                         className="w-full"
                     >
-                        <Select.Trigger className="h-10 rounded-lg border border-border bg-background px-3 text-sm w-full flex items-center justify-between">
+                        <Select.Trigger
+                            id="filter-availability"
+                            className={selectTriggerCls}
+                        >
                             <Select.Value />
                             <Select.Indicator />
                         </Select.Trigger>
                         <Select.Popover>
                             <ListBox>
                                 {AVAILABILITY.map((a) => (
-                                    <ListBox.Item key={a.id} id={a.id} textValue={a.label}>
+                                    <ListBox.Item
+                                        key={a.id}
+                                        id={a.id}
+                                        textValue={a.label}
+                                    >
                                         {a.label}
                                     </ListBox.Item>
                                 ))}
@@ -191,45 +219,39 @@ export default function LawyerFilters() {
                     </Select>
                 </div>
 
-                {/* Min fee */}
-                <div className="col-span-1">
-                    <label className="text-xs font-medium text-secondary-text font-sans block mb-1.5">
+                {/* Min Fee */}
+                <div className={`${fieldWrap} col-span-1 lg:col-span-1`}>
+                    <label className={labelCls} htmlFor="filter-min-fee">
                         Min Fee
                     </label>
-                    <Input
+                    <input
+                        id="filter-min-fee"
                         type="number"
                         placeholder="0"
                         value={minFeeInput}
-                        onValueChange={setMinFeeInput}
-                        classNames={{
-                            inputWrapper:
-                                "bg-background border border-border rounded-lg h-10",
-                            input: "text-sm",
-                        }}
+                        onChange={(e) => setMinFeeInput(e.target.value)}
+                        className={inputBaseCls}
                     />
                 </div>
 
-                {/* Max fee */}
-                <div className="col-span-1">
-                    <label className="text-xs font-medium text-secondary-text font-sans block mb-1.5">
+                {/* Max Fee */}
+                <div className={`${fieldWrap} col-span-1 lg:col-span-1`}>
+                    <label className={labelCls} htmlFor="filter-max-fee">
                         Max Fee
                     </label>
-                    <Input
+                    <input
+                        id="filter-max-fee"
                         type="number"
                         placeholder="Any"
                         value={maxFeeInput}
-                        onValueChange={setMaxFeeInput}
-                        classNames={{
-                            inputWrapper:
-                                "bg-background border border-border rounded-lg h-10",
-                            input: "text-sm",
-                        }}
+                        onChange={(e) => setMaxFeeInput(e.target.value)}
+                        className={inputBaseCls}
                     />
                 </div>
 
                 {/* Clear */}
                 {hasFilters && (
-                    <div className="col-span-2 md:col-span-3 lg:col-span-6 flex justify-end">
+                    <div className="col-span-2 md:col-span-3 lg:col-span-12 flex justify-end">
                         <Button
                             size="sm"
                             variant="light"
