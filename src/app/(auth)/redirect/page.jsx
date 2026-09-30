@@ -13,8 +13,8 @@ export default function AuthRedirectPage() {
 
     const role = session?.user?.role;
     if (!role) return router.replace("/select-role");
-    if (role === "lawyer") return router.replace("/dashboard/lawyer");
-    if (role === "admin") return router.replace("/dashboard/admin");
+    if (role === "lawyer") return router.replace("/dashboard");
+    if (role === "admin") return router.replace("/dashboard");
     router.replace("/");
   }, [session, isPending, router]);
 
