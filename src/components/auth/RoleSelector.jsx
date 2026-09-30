@@ -43,8 +43,8 @@ export default function RoleSelector() {
             return;
         }
         const role = session.user.role;
-        if (role === "lawyer") router.replace("/dashboard/lawyer");
-        else if (role === "admin") router.replace("/dashboard/admin");
+        if (role === "lawyer") router.replace("/dashboard");
+        else if (role === "admin") router.replace("/dashboard");
     }, [session, isPending, router]);
 
     const handleConfirm = async () => {

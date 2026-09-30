@@ -24,8 +24,8 @@ export default function LoginForm() {
   const [googleLoading, setGoogleLoading] = useState(false);
 
   const redirectByRole = (role) => {
-    if (role === "lawyer") return router.push("/dashboard/lawyer");
-    if (role === "admin") return router.push("/dashboard/admin");
+    if (role === "lawyer") return router.push("/dashboard");
+    if (role === "admin") return router.push("/dashboard");
     return router.push("/");
   };
 
