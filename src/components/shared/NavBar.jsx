@@ -30,6 +30,7 @@ const NavBar = () => {
 
   const { data: session } = authClient.useSession();
   const user = session?.user;
+console.log('user:', user);
 
   const openMenu = () => {
     if (sideMenuRef.current) {
