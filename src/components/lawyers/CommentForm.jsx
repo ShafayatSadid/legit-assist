@@ -2,13 +2,24 @@
 "use client";
 
 import { useState } from "react";
-import { Button, Input } from "@heroui/react";
+import {
+    Button,
+    TextField,
+    Label,
+    TextArea,
+    FieldError,
+    Description,
+} from "@heroui/react";
 import toast from "react-hot-toast";
 import { apiFetch } from "@/lib/api";
+
+const MAX_LEN = 500;
 
 export default function CommentForm({ lawyerProfileId, onSuccess }) {
     const [text, setText] = useState("");
     const [loading, setLoading] = useState(false);
+
+    const isInvalid = text.length > 0 && text.trim().length === 0;
 
     const handleSubmit = async (e) => {
         e.preventDefault();
@@ -38,27 +49,51 @@ export default function CommentForm({ lawyerProfileId, onSuccess }) {
             onSubmit={handleSubmit}
             className="rounded-2xl border border-border bg-card p-4 md:p-5"
         >
-            <h3 className="font-heading text-base font-bold text-foreground mb-3">
-                Write a Review
-            </h3>
-            <Input
-                placeholder="Share your experience with this lawyer..."
-                value={text}
-                onValueChange={setText}
-                className="w-full"
-                classNames={{
-                    inputWrapper:
-                        "bg-background border border-border rounded-lg h-auto py-2.5",
-                    input: "text-sm",
+            <TextField
+                isRequired
+                name="comment"
+                defaultValue={text}
+                onChange={setText}
+                isInvalid={isInvalid}
+                validate={(value) => {
+                    if (!value || !value.trim()) {
+                        return "Comment cannot be empty";
+                    }
+                    if (value.trim().length > MAX_LEN) {
+                        return `Comment must be under ${MAX_LEN} characters`;
+                    }
+                    return null;
                 }}
-            />
-            <div className="mt-3 flex items-center justify-between gap-3">
-                <p className="text-xs text-secondary-text font-sans">
-                    Max 500 characters
-                </p>
+                className="w-full"
+            >
+                <Label className="font-heading text-base font-bold text-foreground mb-2">
+                    Write a Review
+                </Label>
+
+                <TextArea
+                    placeholder="Share your experience with this lawyer..."
+                    rows={4}
+                    fullWidth
+                    maxLength={MAX_LEN}
+                    className="bg-background border border-border rounded-lg text-sm text-foreground placeholder:text-secondary-text focus:border-primary transition"
+                />
+
+                <div className="flex items-center justify-between mt-1">
+                    <Description className="text-xs text-secondary-text font-sans">
+                        Max {MAX_LEN} characters
+                    </Description>
+                    <span className="text-xs text-secondary-text font-sans">
+                        {text.length}/{MAX_LEN}
+                    </span>
+                </div>
+
+                <FieldError className="text-xs text-error mt-1" />
+            </TextField>
+
+            <div className="mt-3 flex items-center justify-end">
                 <Button
                     type="submit"
-                    disabled={loading || !text.trim()}
+                    disabled={loading || !text.trim() || isInvalid}
                     className="bg-primary hover:bg-primary-hover text-white font-sans font-semibold rounded-lg px-5"
                 >
                     {loading ? "Posting..." : "Post Review"}

@@ -92,7 +92,7 @@ export default function LawyerFilters() {
     const inputBaseCls =
         "w-full h-10 px-3 rounded-lg border border-border bg-background text-sm text-foreground placeholder:text-secondary-text outline-none focus:border-primary transition font-sans";
     const selectTriggerCls =
-        "h-10 rounded-lg border border-border bg-background px-3 text-sm w-full flex items-center justify-between";
+        "h-10 rounded-lg border border-border bg-background px-3 text-sm w-full flex items-center justify-between text-foreground";
 
     return (
         <div className="rounded-2xl border border-border bg-card p-4 md:p-5">
@@ -132,15 +132,20 @@ export default function LawyerFilters() {
                     >
                         <Select.Trigger
                             id="filter-specialization"
-                            className={selectTriggerCls}
+                            className={`${selectTriggerCls}`}
                         >
                             <Select.Value />
                             <Select.Indicator />
                         </Select.Trigger>
-                        <Select.Popover>
+                        <Select.Popover className="bg-card border border-border rounded-lg shadow-xl">
                             <ListBox>
                                 {SPECIALIZATIONS.map((s) => (
-                                    <ListBox.Item key={s} id={s} textValue={s}>
+                                    <ListBox.Item
+                                        key={s}
+                                        id={s}
+                                        textValue={s}
+                                        className="text-foreground data-[hovered=true]:bg-background data-[selected=true]:bg-primary data-[selected=true]:text-white cursor-pointer"
+                                    >
                                         {s}
                                     </ListBox.Item>
                                 ))}
@@ -168,13 +173,14 @@ export default function LawyerFilters() {
                             <Select.Value />
                             <Select.Indicator />
                         </Select.Trigger>
-                        <Select.Popover>
+                        <Select.Popover className="bg-card border border-border rounded-lg shadow-xl">
                             <ListBox>
                                 {SORTS.map((s) => (
                                     <ListBox.Item
                                         key={s.id}
                                         id={s.id}
                                         textValue={s.label}
+                                        className="text-foreground data-[hovered=true]:bg-background data-[selected=true]:bg-primary data-[selected=true]:text-white cursor-pointer"
                                     >
                                         {s.label}
                                     </ListBox.Item>
@@ -203,13 +209,14 @@ export default function LawyerFilters() {
                             <Select.Value />
                             <Select.Indicator />
                         </Select.Trigger>
-                        <Select.Popover>
+                        <Select.Popover className="bg-card border border-border rounded-lg shadow-xl">
                             <ListBox>
                                 {AVAILABILITY.map((a) => (
                                     <ListBox.Item
                                         key={a.id}
                                         id={a.id}
                                         textValue={a.label}
+                                        className="text-foreground data-[hovered=true]:bg-background data-[selected=true]:bg-primary data-[selected=true]:text-white cursor-pointer"
                                     >
                                         {a.label}
                                     </ListBox.Item>
