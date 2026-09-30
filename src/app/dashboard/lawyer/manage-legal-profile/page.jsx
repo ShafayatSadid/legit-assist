@@ -1,8 +1,9 @@
 // app/dashboard/lawyer/manage-legal-profile/page.jsx
 "use client";
 
-import { useCallback, useEffect, useState } from "react";
+import { Suspense, useCallback, useEffect, useState } from "react";
 import Link from "next/link";
+import { useSearchParams, useRouter } from "next/navigation";
 import { Button, Select, ListBox } from "@heroui/react";
 import {
     FiSave,
@@ -33,30 +34,26 @@ const CATEGORIES = [
 
 const PUBLISH_FEE = 500;
 
-const EMPTY_FORM = {
-    name: "",
-    bio: "",
-    specialization: "",
-    fee: "",
-    image: "",
-};
+const EMPTY_FORM = { name: "", bio: "", specialization: "", fee: "", image: "" };
 
 const inputBaseCls =
     "w-full h-11 px-3 rounded-lg border border-border bg-background text-sm text-foreground placeholder:text-secondary-text outline-none focus:border-primary transition font-sans";
 
-export default function ManageLegalProfilePage() {
+function ManageProfileContent() {
     const { data: session } = authClient.useSession();
+    const searchParams = useSearchParams();
+    const router = useRouter();
 
-    const [profile, setProfile] = useState(null); // null = not loaded yet
+    const [profile, setProfile] = useState(null);
     const [form, setForm] = useState(EMPTY_FORM);
     const [loading, setLoading] = useState(true);
     const [saving, setSaving] = useState(false);
     const [paying, setPaying] = useState(false);
+    const [verifying, setVerifying] = useState(false);
     const [toggling, setToggling] = useState(false);
     const [confirmDelete, setConfirmDelete] = useState(false);
     const [deleting, setDeleting] = useState(false);
 
-    // ── Load profile ──
     const load = useCallback(async () => {
         setLoading(true);
         try {
@@ -71,7 +68,6 @@ export default function ManageLegalProfilePage() {
             });
         } catch (err) {
             if (err.message?.toLowerCase().includes("not found")) {
-                // profile নেই — create mode
                 setProfile(null);
                 setForm({
                     ...EMPTY_FORM,
@@ -86,15 +82,51 @@ export default function ManageLegalProfilePage() {
         }
     }, [session]);
 
+    // ── Stripe return handling ──
     useEffect(() => {
         if (session === undefined) return;
-        load();
-    }, [load, session]);
 
-    // ── Save (create or update) ──
+        const sessionId = searchParams.get("session_id");
+        const cancelled = searchParams.get("cancelled");
+
+        if (cancelled) {
+            toast.error("Payment cancelled");
+            router.replace("/dashboard/lawyer/manage-legal-profile");
+            load();
+            return;
+        }
+
+        if (sessionId) {
+            (async () => {
+                setVerifying(true);
+                try {
+                    const res = await apiFetch(
+                        `/api/payments/lawyer-fee-verify?session_id=${sessionId}`
+                    );
+                    if (res.data.alreadyPaid) {
+                        toast.success("Publishing fee already recorded");
+                    } else {
+                        toast.success("Publishing fee paid — profile activated!");
+                    }
+                    router.replace("/dashboard/lawyer/manage-legal-profile");
+                    load();
+                } catch (err) {
+                    toast.error(err.message || "Verification failed");
+                    router.replace("/dashboard/lawyer/manage-legal-profile");
+                    load();
+                } finally {
+                    setVerifying(false);
+                }
+            })();
+        } else {
+            load();
+        }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [session]);
+
+    // ── Save ──
     const handleSave = async (e) => {
         e.preventDefault();
-
         if (!form.name.trim() || form.name.trim().length < 2) {
             toast.error("Name must be at least 2 characters");
             return;
@@ -144,16 +176,16 @@ export default function ManageLegalProfilePage() {
         }
     };
 
-    // ── Pay publish fee (dummy) ──
+    // ── Pay publish fee → Stripe checkout ──
     const handlePayFee = async () => {
         setPaying(true);
         try {
-            await apiFetch("/api/lawyer/profile/pay-fee", { method: "POST" });
-            toast.success("Publish fee paid");
-            load();
+            const res = await apiFetch("/api/payments/lawyer-fee-checkout", {
+                method: "POST",
+            });
+            window.location.href = res.data.url;
         } catch (err) {
-            toast.error(err.message || "Payment failed");
-        } finally {
+            toast.error(err.message || "Failed to start payment");
             setPaying(false);
         }
     };
@@ -162,9 +194,7 @@ export default function ManageLegalProfilePage() {
     const handleTogglePublish = async () => {
         setToggling(true);
         try {
-            await apiFetch("/api/lawyer/profile/toggle-publish", {
-                method: "PATCH",
-            });
+            await apiFetch("/api/lawyer/profile/toggle-publish", { method: "PATCH" });
             toast.success(profile.published ? "Unpublished" : "Published");
             load();
         } catch (err) {
@@ -189,11 +219,15 @@ export default function ManageLegalProfilePage() {
         }
     };
 
-    // ── Loading ──
-    if (loading) {
+    if (loading || verifying) {
         return (
-            <div className="flex items-center justify-center py-20">
+            <div className="flex flex-col items-center justify-center py-20 gap-3">
                 <div className="w-8 h-8 border-4 border-primary border-t-transparent rounded-full animate-spin" />
+                {verifying && (
+                    <p className="text-sm text-secondary-text font-sans">
+                        Verifying payment…
+                    </p>
+                )}
             </div>
         );
     }
@@ -212,7 +246,6 @@ export default function ManageLegalProfilePage() {
                             : "Create your profile to start receiving hire requests"}
                     </p>
                 </div>
-
                 {profile && (
                     <Link
                         href={`/lawyers/${profile.id}`}
@@ -228,10 +261,7 @@ export default function ManageLegalProfilePage() {
             {profile && !profile.publishFeePaid && (
                 <div className="rounded-2xl border border-secondary/40 bg-secondary/5 p-5 flex flex-col md:flex-row md:items-center md:justify-between gap-4">
                     <div className="flex items-start gap-3">
-                        <FiAlertCircle
-                            className="text-secondary shrink-0 mt-0.5"
-                            size={20}
-                        />
+                        <FiAlertCircle className="text-secondary shrink-0 mt-0.5" size={20} />
                         <div>
                             <h3 className="font-heading text-base font-bold text-foreground">
                                 One-time publishing fee
@@ -247,7 +277,7 @@ export default function ManageLegalProfilePage() {
                         disabled={paying}
                         className="bg-secondary hover:brightness-95 text-primary font-sans font-semibold rounded-lg px-5"
                     >
-                        {paying ? "Processing…" : `Pay ৳ ${PUBLISH_FEE}`}
+                        {paying ? "Redirecting…" : `Pay ৳ ${PUBLISH_FEE}`}
                     </Button>
                 </div>
             )}
@@ -256,10 +286,7 @@ export default function ManageLegalProfilePage() {
             {profile && profile.publishFeePaid && (
                 <div className="rounded-2xl border border-border bg-card p-5 flex flex-col md:flex-row md:items-center md:justify-between gap-4">
                     <div className="flex items-start gap-3">
-                        <FiCheckCircle
-                            className="text-success shrink-0 mt-0.5"
-                            size={20}
-                        />
+                        <FiCheckCircle className="text-success shrink-0 mt-0.5" size={20} />
                         <div>
                             <h3 className="font-heading text-base font-bold text-foreground">
                                 {profile.published
@@ -296,26 +323,22 @@ export default function ManageLegalProfilePage() {
                 </div>
             )}
 
-            {/* Form */}
+            {/* Form (unchanged — same as before) */}
             <form
                 onSubmit={handleSave}
                 className="rounded-2xl border border-border bg-card p-6 md:p-7 space-y-5"
             >
-                {/* Image */}
                 <div>
                     <label className="text-sm font-medium text-foreground font-sans block mb-3">
                         Profile Photo
                     </label>
                     <ImageUploader
                         value={form.image}
-                        onChange={(url) =>
-                            setForm((f) => ({ ...f, image: url }))
-                        }
+                        onChange={(url) => setForm((f) => ({ ...f, image: url }))}
                         fallbackText={form.name}
                     />
                 </div>
 
-                {/* Name */}
                 <div className="flex flex-col">
                     <label
                         htmlFor="lp-name"
@@ -328,14 +351,11 @@ export default function ManageLegalProfilePage() {
                         type="text"
                         placeholder="Adv. John Doe"
                         value={form.name}
-                        onChange={(e) =>
-                            setForm((f) => ({ ...f, name: e.target.value }))
-                        }
+                        onChange={(e) => setForm((f) => ({ ...f, name: e.target.value }))}
                         className={inputBaseCls}
                     />
                 </div>
 
-                {/* Specialization + Fee */}
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
                     <div className="flex flex-col">
                         <label
@@ -349,16 +369,13 @@ export default function ManageLegalProfilePage() {
                             placeholder="Choose specialization"
                             value={form.specialization || null}
                             onChange={(key) =>
-                                setForm((f) => ({
-                                    ...f,
-                                    specialization: key,
-                                }))
+                                setForm((f) => ({ ...f, specialization: key }))
                             }
                             className="w-full"
                         >
                             <Select.Trigger
                                 id="lp-spec"
-                                className="h-11 rounded-lg border border-border bg-background px-3 text-sm w-full flex items-center justify-between text-foreground"
+                                className="h-11 rounded-lg border border-border bg-background px-3 text-sm w-full flex items-center justify-between"
                             >
                                 <Select.Value />
                                 <Select.Indicator />
@@ -393,15 +410,12 @@ export default function ManageLegalProfilePage() {
                             min="0"
                             placeholder="5000"
                             value={form.fee}
-                            onChange={(e) =>
-                                setForm((f) => ({ ...f, fee: e.target.value }))
-                            }
+                            onChange={(e) => setForm((f) => ({ ...f, fee: e.target.value }))}
                             className={inputBaseCls}
                         />
                     </div>
                 </div>
 
-                {/* Bio */}
                 <div className="flex flex-col">
                     <label
                         htmlFor="lp-bio"
@@ -415,9 +429,7 @@ export default function ManageLegalProfilePage() {
                         maxLength={1000}
                         placeholder="Describe your expertise, experience, and approach…"
                         value={form.bio}
-                        onChange={(e) =>
-                            setForm((f) => ({ ...f, bio: e.target.value }))
-                        }
+                        onChange={(e) => setForm((f) => ({ ...f, bio: e.target.value }))}
                         className="w-full px-3 py-2.5 rounded-lg border border-border bg-background text-sm text-foreground placeholder:text-secondary-text outline-none focus:border-primary transition font-sans resize-none"
                     />
                     <p className="text-xs text-secondary-text mt-1.5 font-sans text-right">
@@ -425,7 +437,6 @@ export default function ManageLegalProfilePage() {
                     </p>
                 </div>
 
-                {/* Submit */}
                 <div className="pt-2 flex items-center justify-end">
                     <Button
                         type="submit"
@@ -433,11 +444,7 @@ export default function ManageLegalProfilePage() {
                         className="bg-primary hover:bg-primary-hover text-white font-sans font-semibold rounded-lg px-6"
                     >
                         <FiSave size={14} />
-                        {saving
-                            ? "Saving…"
-                            : profile
-                                ? "Update Profile"
-                                : "Create Profile"}
+                        {saving ? "Saving…" : profile ? "Update Profile" : "Create Profile"}
                     </Button>
                 </div>
             </form>
@@ -463,7 +470,6 @@ export default function ManageLegalProfilePage() {
                 </div>
             )}
 
-            {/* Delete confirm */}
             <ConfirmModal
                 open={confirmDelete}
                 onClose={() => !deleting && setConfirmDelete(false)}
@@ -474,5 +480,19 @@ export default function ManageLegalProfilePage() {
                 loading={deleting}
             />
         </div>
+    );
+}
+
+export default function ManageLegalProfilePage() {
+    return (
+        <Suspense
+            fallback={
+                <div className="flex items-center justify-center py-20">
+                    <div className="w-8 h-8 border-4 border-primary border-t-transparent rounded-full animate-spin" />
+                </div>
+            }
+        >
+            <ManageProfileContent />
+        </Suspense>
     );
 }

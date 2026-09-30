@@ -60,11 +60,14 @@ export default function AllTransactionsPage() {
             ) : (
                 <div className="rounded-2xl border border-border bg-card overflow-hidden">
                     <div className="overflow-x-auto">
-                        <table className="w-full min-w-[700px]">
+                        <table className="w-full min-w-[820px]">
                             <thead className="bg-background/50">
                                 <tr className="text-left text-xs uppercase tracking-wide text-secondary-text font-sans">
                                     <th className="px-5 py-3.5 font-semibold">
                                         Transaction ID
+                                    </th>
+                                    <th className="px-5 py-3.5 font-semibold">
+                                        Type
                                     </th>
                                     <th className="px-5 py-3.5 font-semibold">
                                         Client
@@ -89,13 +92,26 @@ export default function AllTransactionsPage() {
                                         <td className="px-5 py-4 font-mono text-xs text-secondary-text">
                                             {t.transactionId}
                                         </td>
+                                        <td className="px-5 py-4">
+                                            <span
+                                                className={`inline-flex items-center rounded-full px-2.5 py-1 text-xs font-sans font-semibold whitespace-nowrap ${
+                                                    t.type === "publish-fee"
+                                                        ? "bg-secondary/15 text-secondary"
+                                                        : "bg-primary/10 text-primary"
+                                                }`}
+                                            >
+                                                {t.type === "publish-fee"
+                                                    ? "Publish Fee"
+                                                    : "Hire"}
+                                            </span>
+                                        </td>
                                         <td className="px-5 py-4 text-sm font-sans text-foreground">
                                             {t.userEmail}
                                         </td>
                                         <td className="px-5 py-4 text-sm font-sans text-foreground">
                                             {t.lawyerName}
                                         </td>
-                                        <td className="px-5 py-4 text-sm font-sans font-semibold text-foreground">
+                                        <td className="px-5 py-4 text-sm font-sans font-semibold text-foreground whitespace-nowrap">
                                             ৳ {t.amount?.toLocaleString("en-US")}
                                         </td>
                                         <td className="px-5 py-4 text-sm font-sans text-secondary-text whitespace-nowrap">
