@@ -7,8 +7,8 @@ export default function LawyerCard({ lawyer }) {
     return (
         <div className="group rounded-2xl border border-border bg-card p-4 md:p-5 flex flex-col transition-all duration-200 hover:-translate-y-1 hover:shadow-xl hover:shadow-primary/5 hover:border-primary/30">
             {/* Avatar + Status chip */}
-            <div className="flex items-start justify-between">
-                <Avatar size="lg" className="ring-2 ring-secondary/30">
+            <div className="flex items-start justify-between gap-2">
+                <Avatar size="lg" className="ring-2 ring-secondary/30 shrink-0">
                     <Avatar.Image alt={lawyer.name} src={lawyer.image} />
                     <Avatar.Fallback delayMs={600}>
                         {lawyer.name?.slice(0, 2).toUpperCase()}
@@ -19,6 +19,7 @@ export default function LawyerCard({ lawyer }) {
                     size="sm"
                     variant="soft"
                     color={lawyer.isBusy ? "danger" : "success"}
+                    className="shrink-0"
                 >
                     <Chip.Label>
                         {lawyer.isBusy ? "Busy" : "Available"}
@@ -32,7 +33,7 @@ export default function LawyerCard({ lawyer }) {
             </h3>
 
             {/* Specialization */}
-            <p className="text-xs md:text-sm text-secondary font-medium mt-0.5 font-sans">
+            <p className="text-xs md:text-sm text-secondary font-medium mt-0.5 font-sans line-clamp-1">
                 {lawyer.specialization}
             </p>
 
@@ -43,18 +44,26 @@ export default function LawyerCard({ lawyer }) {
 
             {/* Footer */}
             <div className="mt-auto pt-5 flex items-end justify-between gap-2">
-                <div>
-                    <p className="text-[10px] uppercase tracking-wide text-secondary-text font-sans">
-                        Consultation Fee
+                <div className="min-w-0">
+                    <p className="text-[10px] uppercase tracking-wide text-secondary-text font-sans whitespace-nowrap">
+                        Fee
                     </p>
-                    <p className="text-base font-bold text-foreground font-heading leading-tight">
+                    <p className="text-sm md:text-base font-bold text-foreground font-heading leading-tight truncate">
                         ৳ {lawyer.fee?.toLocaleString("en-US")}
                     </p>
                 </div>
-                <Link href={`/lawyers/${lawyer.id}`}>
+                <Link href={`/lawyers/${lawyer.id}`} className="shrink-0">
                     <Button
                         size="sm"
-                        className="bg-primary hover:bg-primary-hover text-white font-sans font-semibold rounded-lg px-3 min-w-0"
+                        isIconOnly
+                        className="md:hidden bg-primary hover:bg-primary-hover text-white rounded-lg min-w-9 w-9 h-9 p-0"
+                        aria-label="View lawyer"
+                    >
+                        <FiArrowUpRight size={16} />
+                    </Button>
+                    <Button
+                        size="sm"
+                        className="hidden md:flex bg-primary hover:bg-primary-hover text-white font-sans font-semibold rounded-lg px-3 min-w-0"
                     >
                         <span>View</span>
                         <FiArrowUpRight size={14} />

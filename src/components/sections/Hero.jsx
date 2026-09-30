@@ -1,7 +1,10 @@
+// components/sections/Hero.jsx
 "use client";
 
-import { useState, useEffect, useCallback } from "react";
+import { useCallback, useEffect, useState } from "react";
 import Link from "next/link";
+import useEmblaCarousel from "embla-carousel-react";
+import Autoplay from "embla-carousel-autoplay";
 import { FiChevronLeft, FiChevronRight } from "react-icons/fi";
 
 const slides = [
@@ -31,55 +34,71 @@ const slides = [
     },
 ];
 
-const AUTOPLAY_MS = 5500;
-
 export default function Hero() {
-    const [current, setCurrent] = useState(0);
+    const [emblaRef, emblaApi] = useEmblaCarousel(
+        { loop: true, align: "start" },
+        [Autoplay({ delay: 5500, stopOnInteraction: false })]
+    );
 
-    const next = useCallback(() => {
-        setCurrent((prev) => (prev + 1) % slides.length);
-    }, []);
+    const [selectedIndex, setSelectedIndex] = useState(0);
 
-    const prev = useCallback(() => {
-        setCurrent((prev) => (prev - 1 + slides.length) % slides.length);
-    }, []);
+    // ── Sync dot indicator with active slide ──
+    const onSelect = useCallback(() => {
+        if (!emblaApi) return;
+        setSelectedIndex(emblaApi.selectedScrollSnap());
+    }, [emblaApi]);
 
-    // Autoplay — manual change করলে timer reset হবে
     useEffect(() => {
-        const id = setInterval(next, AUTOPLAY_MS);
-        return () => clearInterval(id);
-    }, [next, current]);
+        if (!emblaApi) return;
+        onSelect();
+        emblaApi.on("select", onSelect);
+        emblaApi.on("reInit", onSelect);
+        return () => {
+            emblaApi.off("select", onSelect);
+            emblaApi.off("reInit", onSelect);
+        };
+    }, [emblaApi, onSelect]);
+
+    const scrollPrev = useCallback(() => emblaApi?.scrollPrev(), [emblaApi]);
+    const scrollNext = useCallback(() => emblaApi?.scrollNext(), [emblaApi]);
+    const scrollTo = useCallback((i) => emblaApi?.scrollTo(i), [emblaApi]);
 
     return (
         <section className="relative w-full h-[88vh] min-h-140 max-h-215 overflow-hidden bg-primary px-5 md:px-18">
-
-            {/* ───── Background Image Layer ───── */}
-            {slides.map((slide, index) => (
-                <div
-                    key={index}
-                    className={`absolute inset-0 transition-opacity duration-1000 ease-in-out ${index === current ? "opacity-100 z-10" : "opacity-0 z-0"
-                        }`}
-                >
-                    <div
-                        className="absolute inset-0 bg-cover bg-center"
-                        style={{ backgroundImage: `url(${slide.image})` }}
-                    />
-                    {/* Dark navy gradient overlay for text readability */}
-                    <div className="absolute inset-0 bg-gradient-to-r from-primary/95 via-primary/75 to-primary/30" />
-                    <div className="absolute inset-0 bg-gradient-to-t from-primary/70 via-transparent to-transparent" />
-                </div>
-            ))}
-
-            {/* ───── Content Layer ───── */}
-            <div className="relative z-20 container-page h-full flex items-center pt-20">
-                <div className="max-w-2xl grid">
+            {/* ───── Embla Viewport ───── */}
+            <div className="absolute inset-0 overflow-hidden" ref={emblaRef}>
+                <div className="flex h-full">
                     {slides.map((slide, index) => (
                         <div
                             key={index}
-                            className={`col-start-1 row-start-1 transition-all duration-700 ease-out ${index === current
-                                    ? "opacity-100 translate-y-0"
-                                    : "opacity-0 translate-y-4 pointer-events-none"
-                                }`}
+                            className="relative flex-[0_0_100%] h-full min-w-0"
+                        >
+                            {/* Background Image */}
+                            <div
+                                className="absolute inset-0 bg-cover bg-center"
+                                style={{
+                                    backgroundImage: `url(${slide.image})`,
+                                }}
+                            />
+                            {/* Dark navy gradient overlays */}
+                            <div className="absolute inset-0 bg-gradient-to-r from-primary/95 via-primary/75 to-primary/30" />
+                            <div className="absolute inset-0 bg-gradient-to-t from-primary/70 via-transparent to-transparent" />
+                        </div>
+                    ))}
+                </div>
+            </div>
+
+            {/* ───── Content Layer (fade/text synced with active slide) ───── */}
+            <div className="relative z-20 container-page h-full flex items-center pt-20 pointer-events-none">
+                <div className="max-w-2xl relative">
+                    {slides.map((slide, index) => (
+                        <div
+                            key={index}
+                            className={`transition-all duration-700 ease-out ${
+                                index === selectedIndex
+                                    ? "opacity-100 translate-y-0 pointer-events-auto relative"
+                                    : "opacity-0 translate-y-4 pointer-events-none absolute inset-0"
+                            }`}
                         >
                             <h1 className="font-heading text-4xl md:text-5xl lg:text-6xl font-bold text-white leading-[1.1] tracking-tight">
                                 {slide.heading}
@@ -106,9 +125,9 @@ export default function Hero() {
                 </div>
             </div>
 
-            {/* ───── Prev / Next Arrows (desktop only) ───── */}
+            {/* ───── Prev / Next Arrows ───── */}
             <button
-                onClick={prev}
+                onClick={scrollPrev}
                 aria-label="Previous slide"
                 className="hidden md:flex absolute left-6 top-1/2 -translate-y-1/2 z-30 w-11 h-11 items-center justify-center rounded-full bg-white/10 backdrop-blur-sm border border-white/25 text-white hover:bg-white/25 transition"
             >
@@ -116,7 +135,7 @@ export default function Hero() {
             </button>
 
             <button
-                onClick={next}
+                onClick={scrollNext}
                 aria-label="Next slide"
                 className="hidden md:flex absolute right-6 top-1/2 -translate-y-1/2 z-30 w-11 h-11 items-center justify-center rounded-full bg-white/10 backdrop-blur-sm border border-white/25 text-white hover:bg-white/25 transition"
             >
@@ -128,16 +147,16 @@ export default function Hero() {
                 {slides.map((_, index) => (
                     <button
                         key={index}
-                        onClick={() => setCurrent(index)}
+                        onClick={() => scrollTo(index)}
                         aria-label={`Go to slide ${index + 1}`}
-                        className={`h-1.5 rounded-full transition-all duration-300 ${index === current
+                        className={`h-1.5 rounded-full transition-all duration-300 ${
+                            index === selectedIndex
                                 ? "w-10 bg-secondary"
                                 : "w-3 bg-white/50 hover:bg-white/80"
-                            }`}
+                        }`}
                     />
                 ))}
             </div>
-
         </section>
     );
 }
