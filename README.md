@@ -2,7 +2,7 @@
 
 > **Find & Hire Expert Legal Counsel** — A modern online lawyer hiring platform built with Next.js 16, React 19, and HeroUI.
 
-**Live URL:** https://legal-ease-client.vercel.app _(replace with your deployed URL)_
+**Live URL:** https://legit-assist.vercel.app 
 
 ---
 
