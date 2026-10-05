@@ -377,7 +377,7 @@ function LawyersTable({ lawyers, actionId, onTogglePublish, onDelete }) {
                                         {l.specialization}
                                     </td>
                                     <td className="px-5 py-4 text-sm font-sans font-semibold text-foreground">
-                                        ৳ {l.fee?.toLocaleString("en-US")}
+                                        $ {l.fee?.toLocaleString("en-US")}
                                     </td>
                                     <td className="px-5 py-4">
                                         <span

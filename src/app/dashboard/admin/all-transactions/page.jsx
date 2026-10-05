@@ -112,7 +112,7 @@ export default function AllTransactionsPage() {
                                             {t.lawyerName}
                                         </td>
                                         <td className="px-5 py-4 text-sm font-sans font-semibold text-foreground whitespace-nowrap">
-                                            ৳ {t.amount?.toLocaleString("en-US")}
+                                            $ {t.amount?.toLocaleString("en-US")}
                                         </td>
                                         <td className="px-5 py-4 text-sm font-sans text-secondary-text whitespace-nowrap">
                                             {new Date(t.createdAt).toLocaleDateString(

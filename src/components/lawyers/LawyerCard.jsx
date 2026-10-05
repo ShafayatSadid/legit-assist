@@ -49,7 +49,7 @@ export default function LawyerCard({ lawyer }) {
                         Fee
                     </p>
                     <p className="text-sm md:text-base font-bold text-foreground font-heading leading-tight truncate">
-                        ৳ {lawyer.fee?.toLocaleString("en-US")}
+                        $ {lawyer.fee?.toLocaleString("en-US")}
                     </p>
                 </div>
                 <Link href={`/lawyers/${lawyer.id}`} className="shrink-0">

@@ -137,7 +137,7 @@ export default function AnalyticsPage() {
                             value={stats.totalRevenue}
                             icon={FiDollarSign}
                             color="secondary"
-                            prefix="৳ "
+                            prefix="$ "
                         />
                     </div>
 
@@ -268,7 +268,7 @@ export default function AnalyticsPage() {
                                     Total Revenue
                                 </p>
                                 <p className="text-4xl md:text-5xl font-heading font-bold text-foreground mt-3 leading-none">
-                                    ৳{" "}
+                                    ${" "}
                                     {stats.totalRevenue.toLocaleString("en-US")}
                                 </p>
 
@@ -302,7 +302,7 @@ export default function AnalyticsPage() {
                                         Avg per Hire
                                     </p>
                                     <p className="text-lg font-heading font-bold text-foreground mt-0.5">
-                                        ৳{" "}
+                                        ${" "}
                                         {stats.totalHires > 0
                                             ? Math.round(
                                                   stats.totalRevenue /

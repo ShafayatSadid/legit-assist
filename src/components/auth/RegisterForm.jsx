@@ -90,7 +90,7 @@ export default function RegisterForm() {
               Create Your Account
             </h2>
             <p className="text-sm text-secondary-text mt-1.5 font-sans">
-              Join LegalEase and connect with expert lawyers
+              Join LegitAssist and connect with expert lawyers
             </p>
             <div className="mx-auto mt-4 h-1 w-16 rounded-full bg-secondary" />
           </div>

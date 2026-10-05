@@ -271,7 +271,7 @@ export default function LawyerDetailsPage() {
                                 Consultation Fee
                             </p>
                             <p className="text-3xl font-heading font-bold text-foreground mt-1">
-                                ৳ {lawyer.fee?.toLocaleString("en-US")}
+                                $ {lawyer.fee?.toLocaleString("en-US")}
                             </p>
 
                             <div className="my-5 h-px bg-border" />

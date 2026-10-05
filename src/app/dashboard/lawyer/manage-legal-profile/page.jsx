@@ -267,7 +267,7 @@ function ManageProfileContent() {
                                 One-time publishing fee
                             </h3>
                             <p className="text-sm text-secondary-text mt-1 font-sans">
-                                Pay ৳ {PUBLISH_FEE} once to publish your profile
+                                Pay $ {PUBLISH_FEE} once to publish your profile
                                 and appear in search results.
                             </p>
                         </div>
@@ -277,7 +277,7 @@ function ManageProfileContent() {
                         disabled={paying}
                         className="bg-secondary hover:brightness-95 text-primary font-sans font-semibold rounded-lg px-5"
                     >
-                        {paying ? "Redirecting…" : `Pay ৳ ${PUBLISH_FEE}`}
+                        {paying ? "Redirecting…" : `Pay $ ${PUBLISH_FEE}`}
                     </Button>
                 </div>
             )}
@@ -402,7 +402,7 @@ function ManageProfileContent() {
                             htmlFor="lp-fee"
                             className="text-sm font-medium text-foreground font-sans mb-1.5"
                         >
-                            Consultation Fee (৳)
+                            Consultation Fee ($)
                         </label>
                         <input
                             id="lp-fee"

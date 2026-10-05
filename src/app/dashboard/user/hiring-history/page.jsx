@@ -172,7 +172,7 @@ function HiringHistoryContent() {
                                             {h.lawyerSpecialization}
                                         </td>
                                         <td className="px-5 py-4 text-sm font-sans font-semibold text-foreground">
-                                            ৳ {h.fee?.toLocaleString("en-US")}
+                                            $ {h.fee?.toLocaleString("en-US")}
                                         </td>
                                         <td className="px-5 py-4 text-sm font-sans text-secondary-text">
                                             {new Date(h.createdAt).toLocaleDateString("en-US", {
@@ -226,7 +226,7 @@ function HiringHistoryContent() {
                                     <div>
                                         <p className="text-secondary-text">Fee</p>
                                         <p className="font-semibold text-foreground text-sm">
-                                            ৳ {h.fee?.toLocaleString("en-US")}
+                                            $ {h.fee?.toLocaleString("en-US")}
                                         </p>
                                     </div>
                                     <div className="text-right">

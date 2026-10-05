@@ -25,7 +25,7 @@ const ROLES = [
         description:
             "Publish your services and connect with clients worldwide.",
         icon: FiBriefcase,
-        redirect: "/dashboard/lawyer",
+        redirect: "/dashboard",
     },
 ];
 
@@ -73,7 +73,7 @@ export default function RoleSelector() {
             toast.success(
                 selected === "lawyer"
                     ? "Welcome, Lawyer! Complete your profile to start."
-                    : "Welcome to LegalEase!"
+                    : "Welcome to LegitAssist!"
             );
 
             const target = ROLES.find((r) => r.id === selected);
@@ -98,7 +98,7 @@ export default function RoleSelector() {
                         Choose Your Role
                     </h2>
                     <p className="text-base text-secondary-text mt-3 font-sans max-w-md mx-auto">
-                        Tell us how you want to use LegalEase. You can&apos;t
+                        Tell us how you want to use LegitAssist. You can&apos;t
                         change this later without admin approval.
                     </p>
                     <div className="mx-auto mt-5 h-1 w-16 rounded-full bg-secondary" />

@@ -1,7 +1,7 @@
 import RegisterForm from "@/components/auth/RegisterForm";
 
 export const metadata = {
-  title: "Register — LegalEase",
+  title: "Register — LegitAssist",
 };
 
 export default function RegisterPage() {

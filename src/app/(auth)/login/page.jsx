@@ -1,7 +1,7 @@
 import LoginForm from "@/components/auth/LoginForm";
 
 export const metadata = {
-  title: "Login — LegalEase",
+  title: "Login — LegitAssist",
 };
 
 export default function LoginPage() {

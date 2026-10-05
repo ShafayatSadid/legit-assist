@@ -4,7 +4,7 @@ import { Button } from "@heroui/react";
 import { FiHome, FiSearch } from "react-icons/fi";
 
 export const metadata = {
-    title: "404 — Page Not Found | LegalEase",
+    title: "404 — Page Not Found | LegitAssist",
 };
 
 export default function NotFound() {

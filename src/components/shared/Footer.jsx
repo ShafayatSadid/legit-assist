@@ -147,7 +147,7 @@ export default function Footer() {
         <div className="mt-14 pt-6 border-t border-white/15 flex flex-col md:flex-row items-center justify-between gap-4">
 
           <p className="text-xs text-white/60 font-sans">
-            © {new Date().getFullYear()} LegalEase. All rights reserved.
+            © {new Date().getFullYear()} LegitAssist. All rights reserved.
           </p>
 
           <p className="text-xs text-white/60 font-sans">

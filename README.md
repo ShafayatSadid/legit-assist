@@ -1,4 +1,4 @@
-# LegalEase — Client
+# LegitAssist — Client
 
 > **Find & Hire Expert Legal Counsel** — A modern online lawyer hiring platform built with Next.js 16, React 19, and HeroUI.
 
@@ -8,7 +8,7 @@
 
 ## 📌 Purpose
 
-LegalEase connects legal seekers (clients) with skilled lawyers. Clients browse and hire legal experts, lawyers manage their listings after a one-time publishing fee, and admins oversee users, transactions, and platform analytics.
+LegitAssist connects legal seekers (clients) with skilled lawyers. Clients browse and hire legal experts, lawyers manage their listings after a one-time publishing fee, and admins oversee users, transactions, and platform analytics.
 
 This repository contains the **frontend** (Next.js App Router + Tailwind CSS 4 + HeroUI). The backend (Express + MongoDB) lives in a separate repository.
 
@@ -123,7 +123,7 @@ App runs on **http://localhost:3000**
 
 ## 🔐 Demo Admin Access
 
-- **Email:** `admin@legalease.com`
+- **Email:** `admin@LegitAssist.com`
 - **Password:** `Admin@1234`
 
 > To create a new admin: register normally, then set `role: "admin"` on the user document in MongoDB.

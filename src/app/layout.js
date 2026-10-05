@@ -16,9 +16,9 @@ const merriweather = Merriweather({
 });
 
 export const metadata = {
-  title: "LegalEase — Find & Hire Expert Legal Counsel",
+  title: "LegitAssist — Find & Hire Expert Legal Counsel",
   description:
-    "LegalEase connects clients with expert lawyers. Browse, hire, and consult legal professionals online.",
+    "LegitAssist connects clients with expert lawyers. Browse, hire, and consult legal professionals online.",
 };
 
 export default function RootLayout({ children }) {

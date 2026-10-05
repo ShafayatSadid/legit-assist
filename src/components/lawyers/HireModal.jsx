@@ -68,7 +68,7 @@ export default function HireModal({ lawyer, open, onClose, onSuccess }) {
                             Consultation Fee
                         </span>
                         <span className="font-bold text-foreground">
-                            ৳ {lawyer.fee?.toLocaleString("en-US")}
+                            $ {lawyer.fee?.toLocaleString("en-US")}
                         </span>
                     </div>
                 </div>
