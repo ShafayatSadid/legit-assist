@@ -64,7 +64,7 @@ export default function Hero() {
     const scrollTo = useCallback((i) => emblaApi?.scrollTo(i), [emblaApi]);
 
     return (
-        <section className="relative w-full h-[88vh] min-h-140 max-h-215 overflow-hidden bg-primary px-5 md:px-18">
+        <section className="relative w-full h-[88vh] min-h-125 max-h-175 overflow-hidden bg-primary px-5 md:px-18">
             {/* ───── Embla Viewport ───── */}
             <div className="absolute inset-0 overflow-hidden" ref={emblaRef}>
                 <div className="flex h-full">

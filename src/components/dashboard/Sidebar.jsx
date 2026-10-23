@@ -14,6 +14,8 @@ import {
     FiCreditCard,
     FiBarChart2,
     FiLogOut,
+    FiBriefcase,
+    FiSettings
 } from "react-icons/fi";
 import { authClient } from "@/lib/auth-client";
 
@@ -49,12 +51,17 @@ const LINKS = {
             icon: FiEdit3,
         },
     ],
-    admin: [
+        admin: [
         { label: "Overview", href: "/dashboard", icon: FiGrid, exact: true },
         {
             label: "Manage Users",
             href: "/dashboard/admin/manage-users",
             icon: FiUsers,
+        },
+        {
+            label: "Manage Lawyers",
+            href: "/dashboard/admin/manage-lawyers", // নতুন রুট
+            icon: FiBriefcase,
         },
         {
             label: "Transactions",
@@ -65,6 +72,11 @@ const LINKS = {
             label: "Analytics",
             href: "/dashboard/admin/analytics",
             icon: FiBarChart2,
+        },
+        {
+            label: "Settings",
+            href: "/dashboard/admin/settings", // নতুন রুট
+            icon: FiSettings,
         },
     ],
 };
