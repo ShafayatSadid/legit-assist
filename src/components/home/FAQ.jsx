@@ -7,7 +7,7 @@ import { FiPlus, FiMinus } from "react-icons/fi";
 
 const FAQS = [
     {
-        q: "How do I hire a lawyer on LegalEase?",
+        q: "How do I hire a lawyer on LegitAssist?",
         a: "Browse our verified lawyers, select one that fits your needs, and click 'Hire Lawyer'. Once the lawyer accepts your request, you can securely pay the consultation fee to confirm the session."
     },
     {

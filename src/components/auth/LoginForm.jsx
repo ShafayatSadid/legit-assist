@@ -1,3 +1,4 @@
+// components/auth/LoginForm.jsx
 "use client";
 
 import { useState } from "react";
@@ -19,6 +20,10 @@ import { authClient } from "@/lib/auth-client";
 export default function LoginForm() {
   const router = useRouter();
 
+  // Controlled states for demo auto-fill
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  
   const [isShowPassword, setIsShowPassword] = useState(false);
   const [loading, setLoading] = useState(false);
   const [googleLoading, setGoogleLoading] = useState(false);
@@ -32,14 +37,17 @@ export default function LoginForm() {
   const onSubmit = async (e) => {
     e.preventDefault();
 
-    const formData = new FormData(e.currentTarget);
-    const user = Object.fromEntries(formData.entries());
+    if (!email || !password) {
+      toast.error("Please enter email and password");
+      return;
+    }
+
     setLoading(true);
 
     try {
       const { data, error } = await authClient.signIn.email({
-        email: user.email,
-        password: user.password,
+        email: email,
+        password: password,
       });
 
       if (error) {
@@ -102,6 +110,8 @@ export default function LoginForm() {
             <TextField
               isRequired
               name="email"
+              value={email}
+              onChange={setEmail}
               validate={(value) => {
                 if (!value) return "Email is required";
                 if (
@@ -129,6 +139,8 @@ export default function LoginForm() {
               isRequired
               name="password"
               type={isShowPassword ? "text" : "password"}
+              value={password}
+              onChange={setPassword}
               validate={(value) => {
                 if (!value) return "Password is required";
                 return null;
@@ -176,6 +188,32 @@ export default function LoginForm() {
             >
               {loading ? "Signing in..." : "Sign In"}
             </Button>
+
+            {/* Demo Buttons */}
+            <div className="mt-4 flex gap-3">
+              <button
+                type="button"
+                onClick={() => {
+                  setEmail("user@LegitAssist.com");
+                  setPassword("User@1234");
+                  toast.success("User credentials filled");
+                }}
+                className="flex-1 py-2 rounded-lg border border-primary/30 bg-primary/5 text-primary text-xs font-semibold hover:bg-primary/10 transition"
+              >
+                Demo User
+              </button>
+              <button
+                type="button"
+                onClick={() => {
+                  setEmail("test@gmail.com");
+                  setPassword("..//Admin@123");
+                  toast.success("Admin credentials filled");
+                }}
+                className="flex-1 py-2 rounded-lg border border-secondary/50 bg-secondary/10 text-secondary text-xs font-semibold hover:bg-secondary/20 transition"
+              >
+                Demo Admin
+              </button>
+            </div>
           </Form>
 
           {/* Divider */}

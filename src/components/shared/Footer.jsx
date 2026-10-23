@@ -41,8 +41,8 @@ export default function Footer() {
           <div className="lg:col-span-4">
             <Link href="/">
               <h2 className="font-heading text-2xl font-bold leading-none">
-                <span className="text-white">Legal</span>
-                <span className="text-secondary">Ease</span>
+                <span className="text-white">Legit</span>
+                <span className="text-secondary">Assist</span>
               </h2>
             </Link>
             <p className="mt-5 text-sm text-white/70 leading-relaxed max-w-sm font-sans">

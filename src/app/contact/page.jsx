@@ -60,7 +60,7 @@ export default function ContactPage() {
                             <div className="w-10 h-10 rounded-full bg-primary/10 text-primary flex items-center justify-center"><FiMail size={18} /></div>
                             <div>
                                 <p className="text-sm font-semibold text-foreground font-sans">Email</p>
-                                <p className="text-xs text-secondary-text font-sans">support@legalease.com</p>
+                                <p className="text-xs text-secondary-text font-sans">support@LegitAssist.com</p>
                             </div>
                         </div>
                         <div className="flex items-center gap-4">

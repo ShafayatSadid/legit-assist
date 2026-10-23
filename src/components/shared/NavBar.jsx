@@ -19,6 +19,8 @@ import { authClient } from "@/lib/auth-client";
 const NAV_LINKS = [
   { label: "Home", href: "/" },
   { label: "Browse Lawyers", href: "/lawyers" },
+  { label: "About", href: "/about" },
+  { label: "Contact", href: "/contact" },
 ];
 
 const NavBar = () => {
@@ -163,8 +165,8 @@ const NavBar = () => {
       <div className="flex-1 md:flex-none text-center md:text-left">
         <Link href="/">
           <h1 className="font-heading text-2xl font-bold tracking-tight leading-none">
-            <span className="text-primary">Legal</span>
-            <span className="text-secondary">Ease</span>
+            <span className="text-primary">Legit</span>
+            <span className="text-secondary">Assist</span>
           </h1>
         </Link>
       </div>
