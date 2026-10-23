@@ -6,6 +6,7 @@ import HowItWorks from "@/components/home/HowItWorks";
 import PlatformStats from "@/components/home/PlatformStats";
 import Testimonials from "@/components/home/Testimonials";
 import FAQ from "@/components/home/FAQ";
+import CallToAction from "@/components/home/CallToAction";
 
 export default function Home() {
   return (
@@ -23,6 +24,7 @@ export default function Home() {
       <div className="container-page py-10 max-w-7xl mx-auto px-2 sm:px-5">
         <Testimonials />
         <FAQ />
+        <CallToAction />
       </div>
     </div>
   );

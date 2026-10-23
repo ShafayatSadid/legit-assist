@@ -142,7 +142,7 @@ export default function LawyerDetailsPage() {
 
     return (
         <>
-            <section className="container-page py-8 md:py-10">
+            <section className="container-page py-8 md:py-10 max-w-7xl mx-auto px-2">
                 <Link
                     href="/lawyers"
                     className="inline-flex items-center gap-2 text-sm text-secondary-text hover:text-primary transition font-sans mb-6"
