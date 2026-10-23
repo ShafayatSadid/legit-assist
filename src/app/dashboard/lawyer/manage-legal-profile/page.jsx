@@ -34,7 +34,14 @@ const CATEGORIES = [
 
 const PUBLISH_FEE = 500;
 
-const EMPTY_FORM = { name: "", bio: "", specialization: "", fee: "", image: "" };
+const EMPTY_FORM = {
+    name: "",
+    bio: "",
+    specialization: "",
+    fee: "",
+    image: "",
+    gallery: [], // ✅ Added gallery
+};
 
 const inputBaseCls =
     "w-full h-11 px-3 rounded-lg border border-border bg-background text-sm text-foreground placeholder:text-secondary-text outline-none focus:border-primary transition font-sans";
@@ -65,6 +72,7 @@ function ManageProfileContent() {
                 specialization: res.data.specialization || "",
                 fee: res.data.fee ?? "",
                 image: res.data.image || "",
+                gallery: res.data.gallery || [], // ✅ Load gallery
             });
         } catch (err) {
             if (err.message?.toLowerCase().includes("not found")) {
@@ -82,7 +90,6 @@ function ManageProfileContent() {
         }
     }, [session]);
 
-    // ── Stripe return handling ──
     useEffect(() => {
         if (session === undefined) return;
 
@@ -124,7 +131,6 @@ function ManageProfileContent() {
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [session]);
 
-    // ── Save ──
     const handleSave = async (e) => {
         e.preventDefault();
         if (!form.name.trim() || form.name.trim().length < 2) {
@@ -153,6 +159,7 @@ function ManageProfileContent() {
                 specialization: form.specialization,
                 fee: feeNum,
                 image: form.image || null,
+                gallery: form.gallery, // ✅ Include gallery in payload
             };
 
             if (profile) {
@@ -176,7 +183,6 @@ function ManageProfileContent() {
         }
     };
 
-    // ── Pay publish fee → Stripe checkout ──
     const handlePayFee = async () => {
         setPaying(true);
         try {
@@ -190,7 +196,6 @@ function ManageProfileContent() {
         }
     };
 
-    // ── Toggle publish ──
     const handleTogglePublish = async () => {
         setToggling(true);
         try {
@@ -204,7 +209,6 @@ function ManageProfileContent() {
         }
     };
 
-    // ── Delete ──
     const handleDelete = async () => {
         setDeleting(true);
         try {
@@ -234,7 +238,6 @@ function ManageProfileContent() {
 
     return (
         <div className="space-y-6">
-            {/* Header */}
             <div className="flex items-start justify-between gap-4 flex-wrap">
                 <div>
                     <h1 className="font-heading text-2xl md:text-3xl font-bold text-foreground">
@@ -267,7 +270,7 @@ function ManageProfileContent() {
                                 One-time publishing fee
                             </h3>
                             <p className="text-sm text-secondary-text mt-1 font-sans">
-                                Pay $ {PUBLISH_FEE} once to publish your profile
+                                Pay ৳ {PUBLISH_FEE} once to publish your profile
                                 and appear in search results.
                             </p>
                         </div>
@@ -277,7 +280,7 @@ function ManageProfileContent() {
                         disabled={paying}
                         className="bg-secondary hover:brightness-95 text-primary font-sans font-semibold rounded-lg px-5"
                     >
-                        {paying ? "Redirecting…" : `Pay $ ${PUBLISH_FEE}`}
+                        {paying ? "Redirecting…" : `Pay ৳ ${PUBLISH_FEE}`}
                     </Button>
                 </div>
             )}
@@ -303,10 +306,11 @@ function ManageProfileContent() {
                     <Button
                         onPress={handleTogglePublish}
                         disabled={toggling}
-                        className={`${profile.published
+                        className={`${
+                            profile.published
                                 ? "bg-transparent border border-error text-error"
                                 : "bg-primary hover:bg-primary-hover text-white"
-                            } font-sans font-semibold rounded-lg px-5`}
+                        } font-sans font-semibold rounded-lg px-5`}
                     >
                         {profile.published ? (
                             <>
@@ -323,31 +327,83 @@ function ManageProfileContent() {
                 </div>
             )}
 
-            {/* Form (unchanged — same as before) */}
+            {/* Form */}
             <form
                 onSubmit={handleSave}
-                className="rounded-2xl border border-border bg-card p-6 md:p-7 space-y-5"
+                className="rounded-2xl border border-border bg-card p-6 md:p-7 space-y-6"
             >
-                <div>
-                    <label className="text-sm font-medium text-foreground font-sans block mb-3">
-                        Profile Photo
-                    </label>
-                    <ImageUploader
-                        value={form.image}
-                        onChange={(url) => setForm((f) => ({ ...f, image: url }))}
-                        fallbackText={form.name}
-                    />
+                {/* Image & Gallery */}
+                <div className="space-y-5">
+                    <div>
+                        <label className="text-sm font-medium text-foreground font-sans block mb-3">
+                            Profile Photo
+                        </label>
+                        <ImageUploader
+                            value={form.image}
+                            onChange={(url) => setForm((f) => ({ ...f, image: url }))}
+                            fallbackText={form.name}
+                        />
+                    </div>
+
+                    {/* ✅ Gallery Images */}
+                    <div className="pt-4 border-t border-border">
+                        <label className="text-sm font-medium text-foreground font-sans block mb-1">
+                            Gallery Images (Optional)
+                        </label>
+                        <p className="text-xs text-secondary-text mb-4 font-sans">
+                            Add photos of your office, certificates, or workspace.
+                        </p>
+
+                        <div className="flex flex-wrap gap-4 mb-4">
+                            {form.gallery.map((imgUrl, idx) => (
+                                <div
+                                    key={idx}
+                                    className="relative w-24 h-24 rounded-lg overflow-hidden border border-border group"
+                                >
+                                    <img
+                                        src={imgUrl}
+                                        alt={`gallery ${idx + 1}`}
+                                        className="w-full h-full object-cover"
+                                    />
+                                    <button
+                                        type="button"
+                                        onClick={() => {
+                                            const newGallery = form.gallery.filter(
+                                                (_, i) => i !== idx
+                                            );
+                                            setForm((f) => ({ ...f, gallery: newGallery }));
+                                        }}
+                                        className="absolute inset-0 bg-black/60 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity"
+                                    >
+                                        <FiTrash2 className="text-white" size={20} />
+                                    </button>
+                                </div>
+                            ))}
+                        </div>
+
+                        <div className="w-48">
+                            <ImageUploader
+                                value=""
+                                onChange={(url) => {
+                                    if (url) {
+                                        setForm((f) => ({
+                                            ...f,
+                                            gallery: [...f.gallery, url],
+                                        }));
+                                    }
+                                }}
+                                fallbackText="Add"
+                            />
+                        </div>
+                    </div>
                 </div>
 
-                <div className="flex flex-col">
-                    <label
-                        htmlFor="lp-name"
-                        className="text-sm font-medium text-foreground font-sans mb-1.5"
-                    >
+                {/* Name */}
+                <div className="flex flex-col border-t border-border pt-5">
+                    <label className="text-sm font-medium text-foreground font-sans mb-1.5">
                         Display Name
                     </label>
                     <input
-                        id="lp-name"
                         type="text"
                         placeholder="Adv. John Doe"
                         value={form.name}
@@ -356,12 +412,10 @@ function ManageProfileContent() {
                     />
                 </div>
 
+                {/* Specialization + Fee */}
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
                     <div className="flex flex-col">
-                        <label
-                            htmlFor="lp-spec"
-                            className="text-sm font-medium text-foreground font-sans mb-1.5"
-                        >
+                        <label className="text-sm font-medium text-foreground font-sans mb-1.5">
                             Specialization
                         </label>
                         <Select
@@ -373,10 +427,7 @@ function ManageProfileContent() {
                             }
                             className="w-full"
                         >
-                            <Select.Trigger
-                                id="lp-spec"
-                                className="h-11 rounded-lg border border-border bg-background px-3 text-sm w-full flex items-center justify-between"
-                            >
+                            <Select.Trigger className="h-11 rounded-lg border border-border bg-background px-3 text-sm w-full flex items-center justify-between">
                                 <Select.Value />
                                 <Select.Indicator />
                             </Select.Trigger>
@@ -398,14 +449,10 @@ function ManageProfileContent() {
                     </div>
 
                     <div className="flex flex-col">
-                        <label
-                            htmlFor="lp-fee"
-                            className="text-sm font-medium text-foreground font-sans mb-1.5"
-                        >
-                            Consultation Fee ($)
+                        <label className="text-sm font-medium text-foreground font-sans mb-1.5">
+                            Consultation Fee (৳)
                         </label>
                         <input
-                            id="lp-fee"
                             type="number"
                             min="0"
                             placeholder="5000"
@@ -416,15 +463,12 @@ function ManageProfileContent() {
                     </div>
                 </div>
 
+                {/* Bio */}
                 <div className="flex flex-col">
-                    <label
-                        htmlFor="lp-bio"
-                        className="text-sm font-medium text-foreground font-sans mb-1.5"
-                    >
+                    <label className="text-sm font-medium text-foreground font-sans mb-1.5">
                         Professional Bio
                     </label>
                     <textarea
-                        id="lp-bio"
                         rows={5}
                         maxLength={1000}
                         placeholder="Describe your expertise, experience, and approach…"
@@ -485,13 +529,7 @@ function ManageProfileContent() {
 
 export default function ManageLegalProfilePage() {
     return (
-        <Suspense
-            fallback={
-                <div className="flex items-center justify-center py-20">
-                    <div className="w-8 h-8 border-4 border-primary border-t-transparent rounded-full animate-spin" />
-                </div>
-            }
-        >
+        <Suspense fallback={<div className="py-20 text-center animate-pulse">Loading...</div>}>
             <ManageProfileContent />
         </Suspense>
     );

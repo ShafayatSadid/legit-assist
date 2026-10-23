@@ -35,7 +35,7 @@ export default function RootLayout({ children }) {
         <Toaster />
         <NavBar />
 
-        <main className="flex-1 my-10 md:my-17">
+        <main className="flex-1 my-12 md:my-17">
           {children}
         </main>
 

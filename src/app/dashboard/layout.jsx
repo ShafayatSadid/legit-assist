@@ -62,7 +62,7 @@ export default function DashboardLayout({ children }) {
     }
 
     return (
-        <div className="container-page py-4 md:py-6 px-2 sm:px-5">
+        <div className="container-page py-12 md:py-6 px-2 sm:px-5">
             {/* Mobile top bar */}
             <div className="lg:hidden flex items-center justify-between mb-5">
                 <button
